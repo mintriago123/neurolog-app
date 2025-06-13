@@ -467,7 +467,6 @@ export default function ChildDetailPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* TODO: Implementar lista detallada de logs con filtros */}
               <p className="text-gray-500">Vista detallada de registros próximamente...</p>
             </CardContent>
           </Card>
