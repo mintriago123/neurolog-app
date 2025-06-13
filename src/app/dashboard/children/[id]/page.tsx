@@ -512,7 +512,6 @@ export default function ChildDetailPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* TODO: Implementar configuración específica */}
               <p className="text-gray-500">Configuración específica próximamente...</p>
             </CardContent>
           </Card>
