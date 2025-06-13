@@ -497,7 +497,6 @@ export default function ChildDetailPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* TODO: Implementar gestión de equipo */}
               <p className="text-gray-500">Gestión de equipo próximamente...</p>
             </CardContent>
           </Card>
