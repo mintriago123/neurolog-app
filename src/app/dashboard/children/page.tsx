@@ -243,7 +243,7 @@ function FiltersCard({ filters, onFiltersChange }: FiltersCardProps) {
 
           {/* Rango de edad */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Edad máxima</label>
+            <label htmlFor="max-age" className="text-sm font-medium">Edad máxima</label>
             <Input
               type="number"
               placeholder="Años"
