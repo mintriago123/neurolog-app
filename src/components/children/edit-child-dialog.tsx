@@ -55,9 +55,9 @@ export function EditChildDialog({ child, open, onOpenChange }: EditChildDialogPr
     if (open && child) {
       setFormData({
         name: child.name || '',
-        birth_date: child.birth_date || '',
-        diagnosis: child.diagnosis || '',
-        notes: child.notes || ''
+        birth_date: child.birth_date ?? '',
+        diagnosis: child.diagnosis ?? '',
+        notes: child.notes ?? ''
       })
     }
   }, [open, child])
@@ -99,7 +99,7 @@ export function EditChildDialog({ child, open, onOpenChange }: EditChildDialogPr
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "No se pudo actualizar la información",
+        description: error.message ?? "No se pudo actualizar la información",
         variant: "destructive",
       })
     } finally {
