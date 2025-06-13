@@ -8,30 +8,16 @@
 -- 0. DECLARAR CONSTANTES GLOBALES MEDIANTE FUNCIONES INMUTABLES
 
 -- === ROLES DE USUARIO ===
-CREATE OR REPLACE FUNCTION co_role_parent() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'parent'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_role_teacher() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'teacher'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_role_specialist() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'specialist'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_role_admin() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'admin'::TEXT $$;
+CREATE OR REPLACE FUNCTION co_role_parent() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'parent'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_role_teacher() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'teacher'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_role_specialist() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'specialist'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_role_admin() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'admin'::TEXT $$;
 
--- === RELACIONES USUARIO-NIÑO ===
-CREATE OR REPLACE FUNCTION co_relation_parent() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'parent'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_relation_teacher() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'teacher'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_relation_specialist() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'specialist'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_relation_observer() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'observer'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_relation_family() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'family'::TEXT $$;
+-- === RELACIONES USUARIO-NIÑO ===E'\n'CREATE OR REPLACE FUNCTION co_relation_parent() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'parent'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_relation_teacher() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'teacher'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_relation_specialist() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'specialist'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_relation_observer() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'observer'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_relation_family() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'family'::TEXT $$;
 
--- === NIVELES DE INTENSIDAD ===
-CREATE OR REPLACE FUNCTION co_intensity_low() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'low'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_intensity_medium() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'medium'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_intensity_high() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'high'::TEXT $$;
+-- === NIVELES DE INTENSIDAD ===E'\n'CREATE OR REPLACE FUNCTION co_intensity_low() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'low'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_intensity_medium() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'medium'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_intensity_high() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'high'::TEXT $$;
 
--- === COLORES E ICONOS POR DEFECTO ===
-CREATE OR REPLACE FUNCTION co_color_blue() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT '#3B82F6'::TEXT $$;
-CREATE OR REPLACE FUNCTION co_icon_user() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'user'::TEXT $$;
+-- === COLORES E ICONOS POR DEFECTO ===E'\n'CREATE OR REPLACE FUNCTION co_color_blue() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT '#3B82F6'::TEXT $$;E'\n'CREATE OR REPLACE FUNCTION co_icon_user() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'user'::TEXT $$;
 
 -- === PRIVACIDAD POR DEFECTO PARA CHILDREN ===
-CREATE OR REPLACE FUNCTION co_privacy_default() RETURNS JSONB IMMUTABLE LANGUAGE sql AS $$
-  SELECT '{
+CREATE OR REPLACE FUNCTION co_privacy_default() RETURNS JSONB IMMUTABLE LANGUAGE sql AS $$E'\n'  SELECT '{
     "share_with_specialists": true,
     "share_progress_reports": true,
     "allow_photo_sharing": false,
@@ -39,8 +25,7 @@ CREATE OR REPLACE FUNCTION co_privacy_default() RETURNS JSONB IMMUTABLE LANGUAGE
   }'::JSONB
 $$;
 
--- === ZONA HORARIA POR DEFECTO ===
-CREATE OR REPLACE FUNCTION co_default_timezone() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'America/Guayaquil'::TEXT $$;
+-- === ZONA HORARIA POR DEFECTO ===E'\n'CREATE OR REPLACE FUNCTION co_default_timezone() RETURNS TEXT IMMUTABLE LANGUAGE sql AS $$ SELECT 'America/Guayaquil'::TEXT $$;
 
 
 -- ================================================================
@@ -92,8 +77,7 @@ CREATE TABLE profiles (
   failed_login_attempts INTEGER DEFAULT 0,
   last_failed_login TIMESTAMPTZ,
   account_locked_until TIMESTAMPTZ,
-  timezone TEXT DEFAULT co_default_timezone(),
-  preferences JSONB DEFAULT '{}',
+  timezone TEXT DEFAULT co_default_timezone(),E'\n'  preferences JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -117,10 +101,7 @@ CREATE TABLE children (
   diagnosis TEXT,
   notes TEXT,
   is_active BOOLEAN DEFAULT TRUE,
-  avatar_url TEXT,
-  emergency_contact JSONB DEFAULT '[]',
-  medical_info JSONB DEFAULT '{}',
-  educational_info JSONB DEFAULT '{}',
+  avatar_url TEXT,E'\n'  emergency_contact JSONB DEFAULT '[]',E'\n'  medical_info JSONB DEFAULT '{}',E'\n'  educational_info JSONB DEFAULT '{}',
   privacy_settings JSONB DEFAULT co_privacy_default(),
   created_by UUID REFERENCES profiles(id) NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -148,8 +129,7 @@ CREATE TABLE user_child_relations (
   granted_at TIMESTAMPTZ DEFAULT NOW(),
   expires_at TIMESTAMPTZ,
   is_active BOOLEAN DEFAULT TRUE,
-  notes TEXT,
-  notification_preferences JSONB DEFAULT '{}',
+  notes TEXT,E'\n'  notification_preferences JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, child_id, relationship_type)
 );
@@ -166,9 +146,7 @@ CREATE TABLE daily_logs (
   log_date DATE DEFAULT CURRENT_DATE,
   is_private BOOLEAN DEFAULT FALSE,
   is_deleted BOOLEAN DEFAULT FALSE,
-  is_flagged BOOLEAN DEFAULT FALSE,
-  attachments JSONB DEFAULT '[]',
-  tags TEXT[] DEFAULT '{}',
+  is_flagged BOOLEAN DEFAULT FALSE,E'\n'  attachments JSONB DEFAULT '[]',E'\n'  tags TEXT[] DEFAULT '{}',
   location TEXT,
   weather TEXT,
   reviewed_by UUID REFERENCES profiles(id),
@@ -183,8 +161,7 @@ CREATE TABLE daily_logs (
 
 CREATE TABLE audit_logs (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  table_name TEXT NOT NULL,
-  operation TEXT CHECK (operation IN ('INSERT', 'UPDATE', 'DELETE', 'SELECT')) NOT NULL,
+  table_name TEXT NOT NULL,E'\n'  operation TEXT CHECK (operation IN ('INSERT', 'UPDATE', 'DELETE', 'SELECT')) NOT NULL,
   record_id TEXT,
   user_id UUID REFERENCES profiles(id),
   user_role TEXT,
@@ -193,8 +170,7 @@ CREATE TABLE audit_logs (
   changed_fields TEXT[],
   ip_address INET,
   user_agent TEXT,
-  session_id TEXT,
-  risk_level TEXT CHECK (risk_level IN ('low', 'medium', 'high', 'critical')) DEFAULT 'low',
+  session_id TEXT,E'\n'  risk_level TEXT CHECK (risk_level IN ('low', medium, 'high', 'critical')) DEFAULT 'low',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -241,9 +217,7 @@ BEGIN
   INSERT INTO profiles (id, email, full_name, role)
   VALUES (
     NEW.id,
-    NEW.email,
-    COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
-    COALESCE(NEW.raw_user_meta_data->>'role', co_role_parent())
+    NEW.email,E'\n'    COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),E'\n'    COALESCE(NEW.raw_user_meta_data->>'role', co_role_parent())
   );
   RETURN NEW;
 END;
@@ -314,18 +288,13 @@ BEGIN
     user_role,
     new_values,
     risk_level
-  ) VALUES (
-    'sensitive_access',
-    'SELECT',
+  ) VALUES (E'\n'    'sensitive_access',E'\n'    'SELECT',
     resource_id,
     auth.uid(),
     (SELECT role FROM profiles WHERE id = auth.uid()),
-    jsonb_build_object(
-      'action_type', action_type,
-      'details', action_details,
-      'timestamp', NOW()
+    jsonb_build_object(E'\n'      'action_type', action_type,E'\n'      'details', action_details,E'\n'      'timestamp', NOW()
     ),
-    'medium'
+    medium
   );
 EXCEPTION
   WHEN OTHERS THEN
@@ -357,9 +326,7 @@ CREATE OR REPLACE VIEW child_log_statistics AS
 SELECT 
   c.id as child_id,
   c.name as child_name,
-  COUNT(dl.id) as total_logs,
-  COUNT(CASE WHEN dl.log_date >= CURRENT_DATE - INTERVAL '7 days' THEN 1 END) as logs_this_week,
-  COUNT(CASE WHEN dl.log_date >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as logs_this_month,
+  COUNT(dl.id) as total_logs,E'\n'  COUNT(CASE WHEN dl.log_date >= CURRENT_DATE - INTERVAL '7 days' THEN 1 END) as logs_this_week,E'\n'  COUNT(CASE WHEN dl.log_date >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as logs_this_month,
   ROUND(AVG(dl.mood_score), 2) as avg_mood_score,
   MAX(dl.log_date) as last_log_date,
   COUNT(DISTINCT dl.category_id) as categories_used,
@@ -374,17 +341,7 @@ GROUP BY c.id, c.name;
 -- 8. INSERTAR DATOS INICIALES
 -- ================================================================
 
-INSERT INTO categories (name, description, color, icon, sort_order) VALUES
-('Comportamiento', 'Registros sobre comportamiento y conducta', co_color_blue(), co_icon_user(), 1),
-('Emociones', 'Estado emocional y regulación', '#EF4444', 'heart', 2),
-('Aprendizaje', 'Progreso académico y educativo', '#10B981', 'book', 3),
-('Socialización', 'Interacciones sociales', '#F59E0B', 'users', 4),
-('Comunicación', 'Habilidades de comunicación', '#8B5CF6', 'message-circle', 5),
-('Motricidad', 'Desarrollo motor fino y grueso', '#06B6D4', 'activity', 6),
-('Alimentación', 'Hábitos alimentarios', '#84CC16', 'utensils', 7),
-('Sueño', 'Patrones de sueño y descanso', '#6366F1', 'moon', 8),
-('Medicina', 'Información médica y tratamientos', '#EC4899', 'pill', 9),
-('Otros', 'Otros registros importantes', '#6B7280', 'more-horizontal', 10);
+INSERT INTO categories (name, description, color, icon, sort_order) VALUESE'\n'('Comportamiento', 'Registros sobre comportamiento y conducta', co_color_blue(), co_icon_user(), 1),E'\n'('Emociones', 'Estado emocional y regulación', '#EF4444', 'heart', 2),E'\n'('Aprendizaje', 'Progreso académico y educativo', '#10B981', 'book', 3),E'\n'('Socialización', 'Interacciones sociales', '#F59E0B', 'users', 4),E'\n'('Comunicación', 'Habilidades de comunicación', '#8B5CF6', 'message-circle', 5),E'\n'('Motricidad', 'Desarrollo motor fino y grueso', '#06B6D4', 'activity', 6),E'\n'('Alimentación', 'Hábitos alimentarios', '#84CC16', 'utensils', 7),E'\n'('Sueño', 'Patrones de sueño y descanso', '#6366F1', 'moon', 8),E'\n'('Medicina', 'Información médica y tratamientos', '#EC4899', 'pill', 9),E'\n'('Otros', 'Otros registros importantes', '#6B7280', 'more-horizontal', 10);
 
 -- ================================================================
 -- 9. HABILITAR RLS Y CREAR POLÍTICAS SIMPLES
@@ -467,48 +424,34 @@ CREATE POLICY "System can insert audit logs" ON audit_logs
 
 CREATE OR REPLACE FUNCTION verify_neurolog_setup()
 RETURNS TEXT AS $$
-DECLARE
-  result TEXT := '';
+DECLAREE'\n'  result TEXT := '';
   table_count INTEGER;
   policy_count INTEGER;
   function_count INTEGER;
   category_count INTEGER;
 BEGIN
   SELECT COUNT(*) INTO table_count
-  FROM information_schema.tables 
-  WHERE table_schema = 'public' 
-    AND table_name IN ('profiles', 'children', 'user_child_relations', 'daily_logs', 'categories', 'audit_logs');
-  
-  result := result || 'Tablas creadas: ' || table_count || '/6' || E'\n';
+  FROM information_schema.tables E'\n'  WHERE table_schema = 'public' E'\n'    AND table_name IN ('profiles', 'children', 'user_child_relations', 'daily_logs', 'categories', 'audit_logs');
+  E'\n'  result := result || 'Tablas creadas: ' || table_count || '/6' || E'\n';
   
   SELECT COUNT(*) INTO policy_count
-  FROM pg_policies 
-  WHERE schemaname = 'public';
-  
-  result := result || 'Políticas RLS: ' || policy_count || E'\n';
+  FROM pg_policies E'\n'  WHERE schemaname = 'public';
+  E'\n'  result := result || 'Políticas RLS: ' || policy_count || E'\n';
   
   SELECT COUNT(*) INTO function_count
-  FROM pg_proc 
-  WHERE proname IN ('user_can_access_child', 'user_can_edit_child', 'audit_sensitive_access');
-  
-  result := result || 'Funciones RPC: ' || function_count || '/3' || E'\n';
+  FROM pg_proc E'\n'  WHERE proname IN ('user_can_access_child', 'user_can_edit_child', 'audit_sensitive_access');
+  E'\n'  result := result || 'Funciones RPC: ' || function_count || '/3' || E'\n';
   
   SELECT COUNT(*) INTO category_count
   FROM categories WHERE is_active = true;
-  
-  result := result || 'Categorías: ' || category_count || '/10' || E'\n';
+  E'\n'  result := result || 'Categorías: ' || category_count || '/10' || E'\n';
   
   IF (SELECT COUNT(*) FROM pg_class c 
-      JOIN pg_namespace n ON n.oid = c.relnamespace 
-      WHERE n.nspname = 'public' 
-        AND c.relname = 'children' 
-        AND c.relrowsecurity = true) > 0 THEN
-    result := result || 'RLS: ✅ Habilitado' || E'\n';
-  ELSE
-    result := result || 'RLS: ❌ Deshabilitado' || E'\n';
+      JOIN pg_namespace n ON n.oid = c.relnamespace E'\n'      WHERE n.nspname = 'public' E'\n'        AND c.relname = 'children' 
+        AND c.relrowsecurity = true) > 0 THENE'\n'    result := result || 'RLS: ✅ Habilitado' || E'\n';
+  ELSEE'\n'    result := result || 'RLS: ❌ Deshabilitado' || E'\n';
   END IF;
-  
-  result := result || E'\n🎉 BASE DE DATOS NEUROLOG CONFIGURADA COMPLETAMENTE';
+  E'\n'  result := result || E'\n🎉 BASE DE DATOS NEUROLOG CONFIGURADA COMPLETAMENTE';
   
   RETURN result;
 END;
@@ -525,23 +468,5 @@ SELECT verify_neurolog_setup();
 -- ================================================================
 
 DO $$
-BEGIN
-  RAISE NOTICE '🎉 ¡BASE DE DATOS NEUROLOG CREADA EXITOSAMENTE!';
-  RAISE NOTICE '===============================================';
-  RAISE NOTICE 'Todas las tablas, funciones, vistas y políticas han sido creadas.';
-  RAISE NOTICE 'La base de datos está lista para usar.';
-  RAISE NOTICE '';
-  RAISE NOTICE 'FUNCIONALIDADES INCLUIDAS:';
-  RAISE NOTICE '✅ Gestión de usuarios (profiles)';
-  RAISE NOTICE '✅ Gestión de niños (children)';
-  RAISE NOTICE '✅ Relaciones usuario-niño (user_child_relations)';
-  RAISE NOTICE '✅ Registros diarios (daily_logs)';
-  RAISE NOTICE '✅ Categorías predefinidas (categories)';
-  RAISE NOTICE '✅ Sistema de auditoría (audit_logs)';
-  RAISE NOTICE '✅ Políticas RLS funcionales';
-  RAISE NOTICE '✅ Funciones RPC necesarias';
-  RAISE NOTICE '✅ Vistas optimizadas';
-  RAISE NOTICE '✅ Índices para performance';
-  RAISE NOTICE '';
-  RAISE NOTICE 'PRÓXIMO PASO: Probar la aplicación NeuroLog';
+BEGINE'\n'  RAISE NOTICE '🎉 ¡BASE DE DATOS NEUROLOG CREADA EXITOSAMENTE!';E'\n'  RAISE NOTICE '===============================================';E'\n'  RAISE NOTICE 'Todas las tablas, funciones, vistas y políticas han sido creadas.';E'\n'  RAISE NOTICE 'La base de datos está lista para usar.';E'\n'  RAISE NOTICE '';E'\n'  RAISE NOTICE 'FUNCIONALIDADES INCLUIDAS:';E'\n'  RAISE NOTICE '✅ Gestión de usuarios (profiles)';E'\n'  RAISE NOTICE '✅ Gestión de niños (children)';E'\n'  RAISE NOTICE '✅ Relaciones usuario-niño (user_child_relations)';E'\n'  RAISE NOTICE '✅ Registros diarios (daily_logs)';E'\n'  RAISE NOTICE '✅ Categorías predefinidas (categories)';E'\n'  RAISE NOTICE '✅ Sistema de auditoría (audit_logs)';E'\n'  RAISE NOTICE '✅ Políticas RLS funcionales';E'\n'  RAISE NOTICE '✅ Funciones RPC necesarias';E'\n'  RAISE NOTICE '✅ Vistas optimizadas';E'\n'  RAISE NOTICE '✅ Índices para performance';E'\n'  RAISE NOTICE '';E'\n'  RAISE NOTICE 'PRÓXIMO PASO: Probar la aplicación NeuroLog';
 END $$;
