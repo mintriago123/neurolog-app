@@ -153,7 +153,7 @@ export function useAuth() {
    */
   const displayName = useMemo(() => {
     if (!user) return 'Usuario';
-    return user.full_name || user.email?.split('@')[0] || 'Usuario';
+    return user.full_name ?? user.email?.split('@')[0] ?? 'Usuario';
   }, [user]);
 
   /**
@@ -182,7 +182,7 @@ export function useAuth() {
       'admin': 'Administrador'
     };
     
-    return roleMap[user.role] || 'Usuario';
+    return roleMap[user.role] ?? 'Usuario';
   }, [user]);
 
   /**
