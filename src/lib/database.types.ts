@@ -20,6 +20,9 @@ export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 
 export type UserRole = 'parent' | 'teacher' | 'specialist' | 'admin';
 
+// Define a type alias for relationship_type
+export type RelationshipType = 'parent' | 'teacher' | 'specialist' | 'observer' | 'family';
+
 export interface Database {
   public: {
     Tables: {
@@ -34,9 +37,7 @@ export interface Database {
           old_values: Json | null
           new_values: Json | null
           changed_fields: string[] | null
-          risk_level: RiskLevel
-          created_at: string
-        }
+
         Insert: {
           id?: string
           table_name: string
@@ -285,7 +286,7 @@ export interface Database {
         Row: {
           id: string
           full_name: string
-          role: 'parent' | 'teacher' | 'specialist' | 'admin'
+          role: UserRole
           avatar_url: string | null
           phone: string | null
           is_active: boolean
@@ -301,7 +302,7 @@ export interface Database {
         Insert: {
           id: string
           full_name: string
-          role?: 'parent' | 'teacher' | 'specialist' | 'admin'
+          role?: UserRole
           avatar_url?: string | null
           phone?: string | null
           is_active?: boolean
@@ -342,10 +343,9 @@ export interface Database {
       }
       user_child_relations: {
         Row: {
-          id: string
+          relationship_type: RelationshipType
           user_id: string
           child_id: string
-          relationship_type: 'parent' | 'teacher' | 'specialist' | 'observer' | 'family'
           can_edit: boolean
           can_view: boolean
           can_export: boolean
@@ -376,10 +376,9 @@ export interface Database {
           created_at?: string
         }
         Update: {
-          id?: string
+          relationship_type?: RelationshipType
           user_id?: string
           child_id?: string
-          relationship_type?: 'parent' | 'teacher' | 'specialist' | 'observer' | 'family'
           can_edit?: boolean
           can_view?: boolean
           can_export?: boolean
@@ -450,10 +449,9 @@ export interface Database {
           medical_info: Json | null
           educational_info: Json | null
           privacy_settings: Json | null
-          created_by: string | null
+          relationship_type: RelationshipType | null
           created_at: string | null
           updated_at: string | null
-          relationship_type: 'parent' | 'teacher' | 'specialist' | 'observer' | 'family' | null
           can_edit: boolean | null
           can_view: boolean | null
           can_export: boolean | null
