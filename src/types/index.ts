@@ -269,6 +269,12 @@ export interface LogUpdate {
 
 // Tipo combinado para logs con información detallada
 export interface LogWithDetails extends DailyLog {
+  category_name: string;
+  can_edit: any;
+  logged_by_name: any;
+  logged_by_avatar: string | undefined;
+  child_name: any;
+  child_avatar_url: string | undefined;
   child: {
     id: string;
     name: string;
