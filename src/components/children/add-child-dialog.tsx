@@ -30,7 +30,7 @@ interface FormData {
   notes: string
 }
 
-export function AddChildDialog({ open, onOpenChange }: AddChildDialogProps) {
+export function AddChildDialog({ open, onOpenChange }: Readonly< AddChildDialogProps>) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     birth_date: '',
