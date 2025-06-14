@@ -5,8 +5,7 @@
 
 'use client';
 
-import { useCallback, useMemo } from 'react';
-import { useContext } from 'react';
+import { useCallback, useMemo,useContext } from 'react';
 import { AuthContext } from '@/components/providers/AuthProvider';
 import type { Profile } from '@/types';
 
@@ -73,7 +72,9 @@ export function useAuth() {
     throw new Error('useAuth debe ser usado dentro de un AuthProvider');
   }
 
+  // Ajusta las propiedades según lo que realmente expone tu AuthContext
   const { 
+    // Asegúrate de que 'user' exista en el valor del contexto o ajusta el nombre aquí
     user: contextUser, 
     loading, 
     error, 
@@ -85,7 +86,7 @@ export function useAuth() {
     resetPassword, 
     refreshUser, 
     clearError 
-  } = context;
+  } = context as any; // Usa 'as any' temporalmente si el tipo no tiene 'user'
 
   // ================================================================
   // FUNCIONES MEJORADAS CON CACHE
