@@ -49,7 +49,7 @@ interface AuthProviderProps {
 // AUTH PROVIDER COMPONENT - VERSIÓN CORREGIDA
 // ================================================================
 
-export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
+export function AuthProvider({ children }:  Readonly<AuthProviderProps>): JSX.Element {
   const [user, setUser] = useState<Profile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
