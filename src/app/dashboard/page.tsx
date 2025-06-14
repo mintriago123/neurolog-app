@@ -303,7 +303,7 @@ function RecentLogs({ logs, loading }:  Readonly<RecentLogsProps>) {
     return (
       <div className="space-y-3 sm:space-y-4">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg border bg-white animate-pulse">
+          <div key={`recent-log-skeleton-${i}`} className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-lg bg-white border">
             <Skeleton className="h-10 w-10 rounded-full" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-3/4" />
@@ -379,9 +379,12 @@ function RecentLogs({ logs, loading }:  Readonly<RecentLogsProps>) {
                 <span className="font-medium">{log.child_name}</span>
                 <span className="mx-1">•</span>
                 <span>
-                  {isToday(new Date(log.created_at)) ? 'Hoy' :
-                   isYesterday(new Date(log.created_at)) ? 'Ayer' :
-                   format(new Date(log.created_at), 'dd MMM', { locale: es })}
+                  {(() => {
+                    const createdAt = new Date(log.created_at);
+                    if (isToday(createdAt)) return 'Hoy';
+                    if (isYesterday(createdAt)) return 'Ayer';
+                    return format(createdAt, 'dd MMM', { locale: es });
+                  })()}
                 </span>
               </div>
               
@@ -415,7 +418,7 @@ function RecentLogs({ logs, loading }:  Readonly<RecentLogsProps>) {
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { children, loading: childrenLoading, stats: childrenStats } = useChildren();
+  const { children, loading: childrenLoading } = useChildren();
   const { logs, loading: logsLoading, stats } = useLogs();
 
   const greeting = () => {
@@ -431,7 +434,7 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            {greeting()}, {user?.user_metadata?.full_name?.split(' ')[0] ?? 'Usuario'}
+            {greeting()}, {user?.name?.split(' ')[0] ?? 'Usuario'}
           </h1> 
           <p className="text-sm sm:text-base text-gray-600">
             Aquí está el resumen de hoy para tus niños en seguimiento

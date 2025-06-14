@@ -329,6 +329,8 @@ export interface ChildFilters {
 // ================================================================
 
 export interface DashboardStats {
+  avg_mood_score: any;
+  last_log_date: any;
   total_children: number;
   total_logs: number;
   logs_this_week: number;

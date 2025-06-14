@@ -30,10 +30,16 @@ export default function SettingsPage() {
   const { toast } = useToast()
   
   // ✅ Estado del perfil inicializado correctamente desde el usuario
-  const [profileData, setProfileData] = useState({
+  type UserRole = 'parent' | 'teacher' | 'specialist' | 'admin';
+
+  const [profileData, setProfileData] = useState<{
+    full_name: string;
+    email: string;
+    role: UserRole;
+  }>({
     full_name: '',
     email: '',
-    role: 'parent' as const
+    role: 'parent'
   })
 
   const [preferences, setPreferences] = useState({
@@ -161,6 +167,13 @@ export default function SettingsPage() {
     )
   }
 
+  // Extraer el rol del usuario a una variable legible
+  let userRoleLabel = 'Usuario';
+  if (user.role === 'parent') userRoleLabel = 'Padre/Madre';
+  else if (user.role === 'teacher') userRoleLabel = 'Docente';
+  else if (user.role === 'specialist') userRoleLabel = 'Especialista';
+  else if (user.role === 'admin') userRoleLabel = 'Administrador';
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -186,10 +199,7 @@ export default function SettingsPage() {
               </p>
               <p className="text-sm text-gray-600">{user.email}</p>
               <p className="text-xs text-blue-600 capitalize">
-                {user.role === 'parent' ? 'Padre/Madre' :
-                 user.role === 'teacher' ? 'Docente' :
-                 user.role === 'specialist' ? 'Especialista' : 
-                 user.role === 'admin' ? 'Administrador' : 'Usuario'}
+                {userRoleLabel}
               </p>
             </div>
           </div>
