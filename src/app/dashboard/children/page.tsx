@@ -371,23 +371,28 @@ export default function ChildrenPage() {
 
       <FiltersCard filters={filters} onFiltersChange={setFilters} />
 
-      {loading ? (
-        <LoadingSkeleton />
-      ) : error ? (
-        <ErrorState error={error} />
-      ) : filteredChildren.length === 0 ? (
-        <EmptyState hasChildren={children.length > 0} clearFilters={() => setFilters({})} />
-      ) : (
-        <>
-          <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
-          <ChildrenGrid
-            children={filteredChildren}
-            onEdit={handleEdit}
-            onViewDetails={handleViewDetails}
-            onManageUsers={handleManageUsers}
-          />
-        </>
-      )}
+      {(() => {
+        if (loading) {
+          return <LoadingSkeleton />;
+        }
+        if (error) {
+          return <ErrorState error={error} />;
+        }
+        if (filteredChildren.length === 0) {
+          return <EmptyState hasChildren={children.length > 0} clearFilters={() => setFilters({})} />;
+        }
+        return (
+          <>
+            <ViewModeToggle viewMode={viewMode} setViewMode={setViewMode} />
+            <ChildrenGrid
+              children={filteredChildren}
+              onEdit={handleEdit}
+              onViewDetails={handleViewDetails}
+              onManageUsers={handleManageUsers}
+            />
+          </>
+        );
+      })()}
     </div>
   );
 }
