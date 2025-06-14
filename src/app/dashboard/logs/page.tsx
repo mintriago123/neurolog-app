@@ -71,7 +71,7 @@ interface LogCardProps {
   onAddFeedback: (log: LogWithDetails) => void;
 }
 
-function LogCard({ log, onEdit, onViewDetails, onTogglePrivacy, onAddFeedback }: LogCardProps) {
+function LogCard({ log, onEdit, onViewDetails, onTogglePrivacy, onAddFeedback }: Readonly< LogCardProps>) {
   const getIntensityColor = (level: IntensityLevel) => {
     switch (level) {
       case 'low': return 'bg-green-100 text-green-800';
