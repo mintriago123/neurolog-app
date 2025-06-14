@@ -10,6 +10,16 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+type AuditOperation = 'INSERT' | 'UPDATE' | 'DELETE' | 'SELECT';
+
+// Define a type alias for intensity_level
+export type IntensityLevel = 'low' | 'medium' | 'high';
+
+// Define a type alias for risk_level
+export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+
+export type UserRole = 'parent' | 'teacher' | 'specialist' | 'admin';
+
 export interface Database {
   public: {
     Tables: {
@@ -17,23 +27,20 @@ export interface Database {
         Row: {
           id: string
           table_name: string
-          operation: 'INSERT' | 'UPDATE' | 'DELETE' | 'SELECT'
+          operation: AuditOperation
           record_id: string | null
           user_id: string | null
           user_role: string | null
           old_values: Json | null
           new_values: Json | null
           changed_fields: string[] | null
-          ip_address: string | null
-          user_agent: string | null
-          session_id: string | null
-          risk_level: 'low' | 'medium' | 'high' | 'critical'
+          risk_level: RiskLevel
           created_at: string
         }
         Insert: {
           id?: string
           table_name: string
-          operation: 'INSERT' | 'UPDATE' | 'DELETE' | 'SELECT'
+          operation: AuditOperation
           record_id?: string | null
           user_id?: string | null
           user_role?: string | null
@@ -43,13 +50,13 @@ export interface Database {
           ip_address?: string | null
           user_agent?: string | null
           session_id?: string | null
-          risk_level?: 'low' | 'medium' | 'high' | 'critical'
+          risk_level?: RiskLevel
           created_at?: string
         }
         Update: {
           id?: string
           table_name?: string
-          operation?: 'INSERT' | 'UPDATE' | 'DELETE' | 'SELECT'
+          operation?: AuditOperation
           record_id?: string | null
           user_id?: string | null
           user_role?: string | null
@@ -59,6 +66,9 @@ export interface Database {
           ip_address?: string | null
           user_agent?: string | null
           session_id?: string | null
+          risk_level?: RiskLevel
+          created_at?: string
+        }
           risk_level?: 'low' | 'medium' | 'high' | 'critical'
           created_at?: string
         }
@@ -176,11 +186,8 @@ export interface Database {
         Row: {
           id: string
           child_id: string
-          category_id: string | null
-          title: string
-          content: string
           mood_score: number | null
-          intensity_level: 'low' | 'medium' | 'high'
+          intensity_level: IntensityLevel
           logged_by: string
           log_date: string
           is_private: boolean
@@ -202,11 +209,9 @@ export interface Database {
         Insert: {
           id?: string
           child_id: string
-          category_id?: string | null
-          title: string
-          content: string
           mood_score?: number | null
-          intensity_level?: 'low' | 'medium' | 'high'
+          intensity_level?: IntensityLevel
+
           logged_by: string
           log_date?: string
           is_private?: boolean
@@ -228,14 +233,12 @@ export interface Database {
         Update: {
           id?: string
           child_id?: string
-          category_id?: string | null
-          title?: string
-          content?: string
           mood_score?: number | null
-          intensity_level?: 'low' | 'medium' | 'high'
+          intensity_level?: IntensityLevel
           logged_by?: string
           log_date?: string
           is_private?: boolean
+
           is_deleted?: boolean
           is_flagged?: boolean
           attachments?: Json
@@ -281,7 +284,6 @@ export interface Database {
       profiles: {
         Row: {
           id: string
-          email: string
           full_name: string
           role: 'parent' | 'teacher' | 'specialist' | 'admin'
           avatar_url: string | null
@@ -298,7 +300,6 @@ export interface Database {
         }
         Insert: {
           id: string
-          email: string
           full_name: string
           role?: 'parent' | 'teacher' | 'specialist' | 'admin'
           avatar_url?: string | null
