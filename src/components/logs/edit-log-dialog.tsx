@@ -46,7 +46,7 @@ interface FormData {
   category_id: string
 }
 
-export function EditLogDialog({ log, open, onOpenChange }: EditLogDialogProps) {
+export function EditLogDialog({ log, open, onOpenChange }:  Readonly<EditLogDialogProps>) {
   const [formData, setFormData] = useState<FormData>({
     title: '',
     content: '',
