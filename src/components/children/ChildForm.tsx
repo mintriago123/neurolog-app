@@ -119,7 +119,7 @@ interface PrivacySettingsFormProps {
 // COMPONENTES AUXILIARES
 // ================================================================
 
-function EmergencyContactForm({ contacts, onChange }: EmergencyContactFormProps) {
+function EmergencyContactForm({ contacts, onChange }: Readonly< EmergencyContactFormProps>) {
   const addContact = () => {
     onChange([...contacts, {
       name: '',
@@ -223,7 +223,7 @@ function EmergencyContactForm({ contacts, onChange }: EmergencyContactFormProps)
   );
 }
 
-function MedicalInfoForm({ medicalInfo, onChange }: MedicalInfoFormProps) {
+function MedicalInfoForm({ medicalInfo, onChange }:  Readonly<MedicalInfoFormProps>) {
   const [newAllergy, setNewAllergy] = useState('');
   const [newMedication, setNewMedication] = useState('');
   const [newCondition, setNewCondition] = useState('');
@@ -349,7 +349,7 @@ function MedicalInfoForm({ medicalInfo, onChange }: MedicalInfoFormProps) {
   );
 }
 
-function EducationalInfoForm({ educationalInfo, onChange }: EducationalInfoFormProps) {
+function EducationalInfoForm({ educationalInfo, onChange }: Readonly< EducationalInfoFormProps>) {
   const [newGoal, setNewGoal] = useState('');
   const [newAccommodation, setNewAccommodation] = useState('');
 
@@ -509,7 +509,7 @@ function EducationalInfoForm({ educationalInfo, onChange }: EducationalInfoFormP
   );
 }
 
-function PrivacySettingsForm({ settings, onChange }: PrivacySettingsFormProps) {
+function PrivacySettingsForm({ settings, onChange }:  Readonly<PrivacySettingsFormProps>) {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -587,7 +587,7 @@ function PrivacySettingsForm({ settings, onChange }: PrivacySettingsFormProps) {
 // COMPONENTE PRINCIPAL
 // ================================================================
 
-export default function ChildForm({ child, mode, onSuccess, onCancel }: ChildFormProps) {
+export default function ChildForm({ child, mode, onSuccess, onCancel }: Readonly< ChildFormProps>) {
   const { user } = useAuth();
   const { createChild, updateChild } = useChildren();
   const [uploading, setUploading] = useState(false);
