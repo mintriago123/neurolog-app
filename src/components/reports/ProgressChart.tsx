@@ -13,7 +13,7 @@ interface ProgressChartProps {
   data: any[];
 }
 
-export function ProgressChart({ data }: ProgressChartProps) {
+export function ProgressChart({ data }:  Readonly<ProgressChartProps>) {
   // Procesar datos para el gráfico
   const chartData = data
     .filter(log => log.mood_score)
