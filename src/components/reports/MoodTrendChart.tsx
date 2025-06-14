@@ -13,7 +13,7 @@ interface MoodTrendChartProps {
   data: any[];
 }
 
-export function MoodTrendChart({ data }: MoodTrendChartProps) {
+export function MoodTrendChart({ data }:  Readonly<MoodTrendChartProps>) {
   // Agrupar datos por semana
   const now = new Date();
   const startDate = subWeeks(now, 12); // Últimas 12 semanas
