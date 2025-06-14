@@ -360,7 +360,7 @@ interface MetricCardProps {
   suffix?: string;
 }
 
-function MetricCard({ title, value, icon: Icon, color, subtitle, suffix }: MetricCardProps) {
+function MetricCard({ title, value, icon: Icon, color, subtitle, suffix }: Readonly< MetricCardProps>) {
   const colorClasses = {
     blue: 'bg-blue-100 text-blue-600',
     red: 'bg-red-100 text-red-600',
