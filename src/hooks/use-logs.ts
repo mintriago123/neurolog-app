@@ -187,7 +187,7 @@ export function useLogs(options: UseLogsOptions = {}): UseLogsReturn {
       
       if (error) throw error;
 
-      const newLogs = (data || []).map(log => ({
+      const newLogs = (data ?? []).map(log => ({
         ...log,
         child: log.child ?? { id: log.child_id, name: 'Niño desconocido', avatar_url: null },
         category: log.category ?? { id: '', name: 'Sin categoría', color: '#gray', icon: 'circle' },
