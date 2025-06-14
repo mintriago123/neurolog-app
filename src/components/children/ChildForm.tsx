@@ -278,8 +278,22 @@ function MedicalInfoForm({ medicalInfo, onChange }:  Readonly<MedicalInfoFormPro
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
-              const value = field === 'allergies' ? newAllergy : field === 'medications' ? newMedication : newCondition;
-              const setter = field === 'allergies' ? setNewAllergy : field === 'medications' ? setNewMedication : setNewCondition;
+              let value;
+              if (field === 'allergies') {
+                value = newAllergy;
+              } else if (field === 'medications') {
+                value = newMedication;
+              } else {
+                value = newCondition;
+              }
+              let setter;
+              if (field === 'allergies') {
+                setter = setNewAllergy;
+              } else if (field === 'medications') {
+                setter = setNewMedication;
+              } else {
+                setter = setNewCondition;
+              }
               addItem(field, value, setter);
             }
           }}
