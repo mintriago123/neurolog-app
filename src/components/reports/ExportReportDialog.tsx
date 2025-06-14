@@ -19,7 +19,7 @@ interface ExportReportDialogProps {
   metrics: any;
 }
 
-export function ExportReportDialog({ open, onOpenChange, data, metrics }: ExportReportDialogProps) {
+export function ExportReportDialog({ open, onOpenChange, data, metrics }: Readonly< ExportReportDialogProps>) {
   const [format, setFormat] = useState('pdf');
   const [includeCharts, setIncludeCharts] = useState(true);
   const [includeRawData, setIncludeRawData] = useState(false);
