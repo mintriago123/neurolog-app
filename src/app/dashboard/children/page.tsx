@@ -378,7 +378,3 @@ export default function ChildrenPage() {
     </div>
   );
 }
-export const metadata = {
-  title: 'Dashboard - Niños',
-  description: 'Gestiona y visualiza el progreso de los niños bajo tu cuidado',
-};
