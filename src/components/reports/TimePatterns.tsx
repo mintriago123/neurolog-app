@@ -26,7 +26,7 @@ interface AdvancedInsightsProps {
 // TIMEPATTERNS COMPONENT
 // ================================================================
 
-export function TimePatterns({ logs }: TimePatternsProps) {
+export function TimePatterns({ logs }:  Readonly<TimePatternsProps>) {
   // Analizar patrones por hora del día
   const hourlyPattern = logs.reduce((acc, log) => {
     const hour = new Date(log.created_at).getHours();
@@ -44,7 +44,7 @@ export function TimePatterns({ logs }: TimePatternsProps) {
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
   const getMostActiveHour = () => {
-    const values = Object.values(hourlyPattern);
+    const values = Object.values(hourlyPattern) as number[];
     if (values.length === 0) return 'N/A';
     
     const max = Math.max(...values);
@@ -53,7 +53,7 @@ export function TimePatterns({ logs }: TimePatternsProps) {
   };
 
   const getMostActiveDay = () => {
-    const values = Object.values(weeklyPattern);
+    const values = Object.values(weeklyPattern) as number[];
     if (values.length === 0) return 'N/A';
     
     const max = Math.max(...values);
@@ -94,7 +94,7 @@ export function TimePatterns({ logs }: TimePatternsProps) {
         <div className="flex space-x-1">
           {dayNames.map((day, index) => {
             const count = weeklyPattern[index] ?? 0;
-            const values = Object.values(weeklyPattern);
+            const values = Object.values(weeklyPattern) as number[];
             const maxCount = values.length > 0 ? Math.max(...values) : 0;
             const intensity = maxCount > 0 ? (count / maxCount) * 100 : 0;
             
@@ -122,7 +122,7 @@ export function TimePatterns({ logs }: TimePatternsProps) {
 // CORRELATION ANALYSIS COMPONENT
 // ================================================================
 
-export function CorrelationAnalysis({ logs }: CorrelationAnalysisProps) {
+export function CorrelationAnalysis({ logs }:  Readonly<CorrelationAnalysisProps>) {
   // Función helper para calcular correlación
   function calculateCorrelation(data: any[], field1: string, field2Func: (item: any) => number): number {
     if (data.length < 2) return 0;
@@ -141,10 +141,16 @@ export function CorrelationAnalysis({ logs }: CorrelationAnalysisProps) {
   }
 
   // Calcular correlación entre estado de ánimo e intensidad
+  const getIntensityLevelValue = (log: any) => {
+    if (log.intensity_level === 'low') return 1;
+    if (log.intensity_level === 'medium') return 2;
+    return 3;
+  };
+
   const moodIntensityCorr = calculateCorrelation(
     logs.filter(l => l.mood_score && l.intensity_level),
     'mood_score',
-    log => log.intensity_level === 'low' ? 1 : log.intensity_level === 'medium' ? 2 : 3
+    getIntensityLevelValue
   );
 
   // Calcular correlación entre categorías y estado de ánimo
@@ -160,11 +166,14 @@ export function CorrelationAnalysis({ logs }: CorrelationAnalysisProps) {
     return acc;
   }, {} as Record<string, { total: number; count: number }>);
 
-  const categoryAverages = Object.entries(categoryMoodCorr).map(([category, data]) => ({
-    category,
-    avgMood: data.total / data.count,
-    count: data.count
-  })).sort((a, b) => b.avgMood - a.avgMood);
+  const categoryAverages = Object.entries(categoryMoodCorr).map(([category, data]) => {
+    const typedData = data as { total: number; count: number };
+    return {
+      category,
+      avgMood: typedData.total / typedData.count,
+      count: typedData.count
+    };
+  }).sort((a, b) => b.avgMood - a.avgMood);
 
   const getCorrelationIcon = (correlation: number) => {
     if (correlation > 0.3) return TrendingUp;
@@ -247,7 +256,7 @@ export function CorrelationAnalysis({ logs }: CorrelationAnalysisProps) {
 // ADVANCED INSIGHTS COMPONENT
 // ================================================================
 
-export function AdvancedInsights({ logs }: AdvancedInsightsProps) {
+export function AdvancedInsights({ logs }:  Readonly<AdvancedInsightsProps>) {
   const generateInsights = () => {
     const insights = [];
     
@@ -282,16 +291,21 @@ export function AdvancedInsights({ logs }: AdvancedInsightsProps) {
       
       const trend = recentAvg - avgMood;
       
+      let recommendation = '';
+      if (trend > 0.5) {
+        recommendation = 'Tendencia positiva en el estado de ánimo reciente';
+      } else if (trend < -0.5) {
+        recommendation = 'Considera revisar factores que puedan estar afectando el bienestar';
+      } else {
+        recommendation = 'Estado de ánimo estable';
+      }
+
       insights.push({
         type: trend > 0.5 ? 'success' : trend < -0.5 ? 'warning' : 'info',
         icon: Brain,
         title: 'Tendencia del estado de ánimo',
         description: `Promedio general: ${avgMood.toFixed(1)}/5, últimos 7 días: ${recentAvg.toFixed(1)}/5`,
-        recommendation: trend > 0.5 
-          ? 'Tendencia positiva en el estado de ánimo reciente'
-          : trend < -0.5
-          ? 'Considera revisar factores que puedan estar afectando el bienestar'
-          : 'Estado de ánimo estable'
+        recommendation
       });
     }
 
