@@ -103,11 +103,13 @@ export default function ReportsPage() {
   // Calcular métricas
   const metrics = {
     totalLogs: filteredLogs.length,
-    averageMood: filteredLogs.filter(l => l.mood_score).length > 0 
-      ? (filteredLogs.filter(l => l.mood_score).reduce((sum, l) => sum + l.mood_score, 0) / filteredLogs.filter(l => l.mood_score).length)
+    averageMood: filteredLogs.filter(l => typeof l.mood_score === 'number').length > 0 
+      ? (filteredLogs
+          .filter(l => typeof l.mood_score === 'number')
+          .reduce((sum, l) => sum + (l.mood_score ?? 0), 0) / filteredLogs.filter(l => typeof l.mood_score === 'number').length)
       : 0,
     improvementTrend: calculateImprovementTrend(filteredLogs),
-    activeCategories: new Set(filteredLogs.map(l => l.category_name).filter(Boolean)).size,
+    activeCategories: new Set(filteredLogs.map(l => l.category).filter(Boolean)).size,
     followUpsRequired: filteredLogs.filter(l => l.follow_up_required).length,
     activeDays: new Set(filteredLogs.map(l => new Date(l.created_at).toDateString())).size
   };
@@ -196,22 +198,65 @@ export default function ReportsPage() {
           subtitle="En el período seleccionado"
         />
         
-        <MetricCard
-          title="Estado de Ánimo"
-          value={metrics.averageMood.toFixed(1)}
-          suffix="/5"
-          icon={Heart}
-          color={metrics.averageMood >= 4 ? 'green' : metrics.averageMood >= 3 ? 'orange' : 'red'}
-          subtitle="Promedio del período"
-        />
+        {/*
+          Extraer la lógica del color a una variable antes del JSX
+        */}
+        {(() => {
+          let moodColor: 'green' | 'orange' | 'red';
+          if (metrics.averageMood >= 4) {
+            moodColor = 'green';
+          } else if (metrics.averageMood >= 3) {
+            moodColor = 'orange';
+          } else {
+            moodColor = 'red';
+          }
+          return (
+            <MetricCard
+              title="Estado de Ánimo"
+              value={metrics.averageMood.toFixed(1)}
+              suffix="/5"
+              icon={Heart}
+              color={moodColor}
+              subtitle="Promedio del período"
+            />
+          );
+        })()}
         
-        <MetricCard
-          title="Tendencia"
-          value={metrics.improvementTrend > 0 ? '+' : ''}
-          icon={metrics.improvementTrend > 0 ? TrendingUp : metrics.improvementTrend < 0 ? TrendingUp : Target}
-          color={metrics.improvementTrend > 0 ? 'green' : metrics.improvementTrend < 0 ? 'red' : 'gray'}
-          subtitle={metrics.improvementTrend > 0 ? 'Mejorando' : metrics.improvementTrend < 0 ? 'Necesita atención' : 'Estable'}
-        />
+        {(() => {
+          let trendIcon;
+          if (metrics.improvementTrend > 0) {
+            trendIcon = TrendingUp;
+          } else if (metrics.improvementTrend < 0) {
+            trendIcon = TrendingUp;
+          } else {
+            trendIcon = Target;
+          }
+          let trendColor: 'green' | 'red' | 'gray';
+          if (metrics.improvementTrend > 0) {
+            trendColor = 'green';
+          } else if (metrics.improvementTrend < 0) {
+            trendColor = 'red';
+          } else {
+            trendColor = 'gray';
+          }
+          let trendSubtitle: string;
+          if (metrics.improvementTrend > 0) {
+            trendSubtitle = 'Mejorando';
+          } else if (metrics.improvementTrend < 0) {
+            trendSubtitle = 'Necesita atención';
+          } else {
+            trendSubtitle = 'Estable';
+          }
+          return (
+            <MetricCard
+              title="Tendencia"
+              value={metrics.improvementTrend > 0 ? '+' : ''}
+              icon={trendIcon}
+              color={trendColor}
+              subtitle={trendSubtitle}
+            />
+          );
+        })()}
         
         <MetricCard
           title="Categorías"
