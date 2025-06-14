@@ -379,9 +379,12 @@ function RecentLogs({ logs, loading }:  Readonly<RecentLogsProps>) {
                 <span className="font-medium">{log.child_name}</span>
                 <span className="mx-1">•</span>
                 <span>
-                  {isToday(new Date(log.created_at)) ? 'Hoy' :
-                   isYesterday(new Date(log.created_at)) ? 'Ayer' :
-                   format(new Date(log.created_at), 'dd MMM', { locale: es })}
+                  {(() => {
+                    const createdAt = new Date(log.created_at);
+                    if (isToday(createdAt)) return 'Hoy';
+                    if (isYesterday(createdAt)) return 'Ayer';
+                    return format(createdAt, 'dd MMM', { locale: es });
+                  })()}
                 </span>
               </div>
               
@@ -415,7 +418,7 @@ function RecentLogs({ logs, loading }:  Readonly<RecentLogsProps>) {
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { children, loading: childrenLoading, stats: childrenStats } = useChildren();
+  const { children, loading: childrenLoading } = useChildren();
   const { logs, loading: logsLoading, stats } = useLogs();
 
   const greeting = () => {
