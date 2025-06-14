@@ -39,7 +39,7 @@ interface FormData {
   notes: string
 }
 
-export function EditChildDialog({ child, open, onOpenChange }: EditChildDialogProps) {
+export function EditChildDialog({ child, open, onOpenChange }:  Readonly<EditChildDialogProps>) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     birth_date: '',
