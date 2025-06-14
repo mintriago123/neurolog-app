@@ -258,14 +258,22 @@ function AccessibleChildren({ children, loading }: Readonly< AccessibleChildrenP
                   <span>Actividad semanal</span>
                   <span>{child.weekly_logs ?? 0}/7</span>
                 </div>
-                <Progress 
-                  value={((child.weekly_logs ?? 0) / 7) * 100} 
-                  className="h-2"
-                  indicatorClassName={
-                    (child.weekly_logs ?? 0) >= 5 ? "bg-green-500" :
-                    (child.weekly_logs ?? 0) >= 3 ? "bg-yellow-500" : "bg-red-500"
+                {(() => {
+                  const weeklyLogs = child.weekly_logs ?? 0;
+                  let indicatorColor = "bg-red-500";
+                  if (weeklyLogs >= 5) {
+                    indicatorColor = "bg-green-500";
+                  } else if (weeklyLogs >= 3) {
+                    indicatorColor = "bg-yellow-500";
                   }
-                />
+                  return (
+                    <Progress 
+                      value={(weeklyLogs / 7) * 100} 
+                      className="h-2"
+                      indicatorClassName={indicatorColor}
+                    />
+                  );
+                })()}
               </div>
             </CardContent>
           </Card>
