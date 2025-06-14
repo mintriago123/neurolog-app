@@ -57,12 +57,17 @@ function getRelationshipLabel(type: RelationshipType): string {
   }
 }
 
-function ChildCard({ child, onEdit, onViewDetails, onManageUsers }: {
+function ChildCard({
+  child,
+  onEdit,
+  onViewDetails,
+  onManageUsers,
+}: Readonly<{
   child: ChildWithRelation;
   onEdit: (c: ChildWithRelation) => void;
   onViewDetails: (c: ChildWithRelation) => void;
   onManageUsers: (c: ChildWithRelation) => void;
-}) {
+}>)  {
   return (
     <Card className="group hover:shadow-md transition-all duration-200">
       <CardHeader className="pb-3">
@@ -142,8 +147,13 @@ function ChildCard({ child, onEdit, onViewDetails, onManageUsers }: {
   );
 }
 
-function FiltersCard({ filters, onFiltersChange }: { filters: ChildFilters; onFiltersChange: (f: ChildFilters) => void }) {
-  return (
+function FiltersCard({
+  filters,
+  onFiltersChange,
+}: Readonly<{
+  filters: ChildFilters;
+  onFiltersChange: (f: ChildFilters) => void;
+}>) {  return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center text-base">
@@ -221,8 +231,11 @@ function LoadingSkeleton() {
   );
 }
 
-function ErrorState({ error }: { error: string }) {
-  return (
+function ErrorState({
+  error,
+}: Readonly<{
+  error: string;
+}>) {  return (
     <Card className="border-red-200 bg-red-50">
       <CardContent className="text-center py-12">
         <p className="text-red-600 mb-4">Error al cargar los niños: {error}</p>
@@ -234,7 +247,7 @@ function ErrorState({ error }: { error: string }) {
   );
 }
 
-function EmptyState({ hasChildren, clearFilters }: { hasChildren: boolean; clearFilters: () => void }) {
+function EmptyState({ hasChildren, clearFilters }:  Readonly<{ hasChildren: boolean; clearFilters: () => void }>) {
   return (
     <Card>
       <CardContent className="text-center py-12">
@@ -261,7 +274,7 @@ function EmptyState({ hasChildren, clearFilters }: { hasChildren: boolean; clear
   );
 }
 
-function ViewModeToggle({ viewMode, setViewMode }: { viewMode: 'grid' | 'list'; setViewMode: (mode: 'grid' | 'list') => void }) {
+function ViewModeToggle({ viewMode, setViewMode }:  Readonly<{ viewMode: 'grid' | 'list'; setViewMode: (mode: 'grid' | 'list') => void }>) {
   return (
     <div className="flex justify-end">
       <div className="flex items-center space-x-2">
@@ -273,12 +286,12 @@ function ViewModeToggle({ viewMode, setViewMode }: { viewMode: 'grid' | 'list'; 
   );
 }
 
-function ChildrenGrid({ children, onEdit, onViewDetails, onManageUsers }: {
+function ChildrenGrid({ children, onEdit, onViewDetails, onManageUsers }: Readonly< {
   children: ChildWithRelation[];
   onEdit: (c: ChildWithRelation) => void;
   onViewDetails: (c: ChildWithRelation) => void;
   onManageUsers: (c: ChildWithRelation) => void;
-}) {
+}>) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {children.map((child) => (
